@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Srijeet Chatterjee — AI / ML Engineer</title>
+    <meta name="description" content="Srijeet Chatterjee — AI/ML Engineer. 10+ years experience building end-to-end ML systems, interview prep mentor, and creator." />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="icon" href="assets/images/profile/sri_profile_image.HEIC" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-grid">
+        <div class="brand">
+          <img class="avatar" src="assets/images/profile/sri_profile_image.HEIC" alt="Srijeet Chatterjee" />
+          <div>
+            <h1>Srijeet Chatterjee</h1>
+            <p class="tagline">AI / ML Engineer • Technical leader • Mentor</p>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#about">About</a>
+          <a href="#work">Experience</a>
+          <a href="#skills">Skills</a>
+          <a href="#gallery">Travel & Family</a>
+          <a href="#booking">Book</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="hero" class="hero">
+        <div class="hero-left">
+          <h2>Exceptional AI & ML Engineering. Pragmatic product thinking.</h2>
+          <p class="lead">I build production-grade ML systems end-to-end — from problem framing and data pipelines to models and productized infra. I’ve led teams that delivered measurable business impact, scaled models to millions of users, and mentored engineers through FAANG interview prep.</p>
+          <div class="hero-cta">
+            <a class="btn primary" href="#booking">Book a slot</a>
+            <a class="btn" href="assets/docs/resume.pdf" download>Download Resume</a>
+          </div>
+          <div class="meta">
+            <span id="visits">Visits: —</span>
+            <button id="likeBtn" class="like">❤ Like</button>
+            <span id="likes">0</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="cards">
+            <div class="card">
+              <h3>10+ Years</h3>
+              <p>AI / ML engineering & leadership — delivering business outcomes.</p>
+            </div>
+            <div class="card">
+              <h3>0 → 1 Products</h3>
+              <p>Led multiple initiatives taking prototypes to production with strong metrics and customer impact.</p>
+            </div>
+            <div class="card">
+              <h3>Interview Prep</h3>
+              <p>FAANG interview guidance, mock interviews and ML system design coaching.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="panel">
+        <h2>About</h2>
+        <p>I combine deep technical expertise in machine learning with product and customer-first thinking. I focus on high-leverage problems: building systems that are reliable, explainable, and measurable. My approach blends rigorous experimentation with pragmatic engineering to ship results quickly and safely.</p>
+        <ul class="highlights">
+          <li>Led teams to deploy large-scale ML solutions with measurable KPI improvements.</li>
+          <li>Experienced mentor for data scientists and ML engineers preparing for interviews.</li>
+          <li>Strong track-record in stakeholder communication and strategic roadmapping.</li>
+        </ul>
+      </section>
+
+      <section id="work" class="panel">
+        <h2>Selected Experience</h2>
+        <div class="experience-grid">
+          <article class="exp">
+            <h3>Senior ML Lead — Product AI</h3>
+            <p class="muted">(Strategic leadership, end-to-end ML systems)</p>
+            <ul>
+              <li>Led end-to-end development of personalized recommendation pipelines serving millions of users; reduced latency by 5x and improved engagement by 20%.</li>
+              <li>Drove roadmap, stakeholder alignment and measurement plans to convert ML outcomes into product KPIs.</li>
+            </ul>
+          </article>
+          <article class="exp">
+            <h3>AI Engineer — Applied ML</h3>
+            <p class="muted">(Data, modeling & deployment)</p>
+            <ul>
+              <li>Built robust feature stores, offline/online training and CI/CD for models; created monitoring and alerting to ensure model health in production.</li>
+              <li>Mento red junior engineers and designed interview prep sessions focused on system design and ML coding.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="skills" class="panel">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div class="skill">Machine Learning</div>
+          <div class="skill">Deep Learning</div>
+          <div class="skill">MLOps & Infra</div>
+          <div class="skill">Data Engineering</div>
+          <div class="skill">Model Interpretability</div>
+          <div class="skill">Systems Design</div>
+          <div class="skill">Interview Coaching</div>
+        </div>
+      </section>
+
+      <section id="gallery" class="panel">
+        <h2>Travel, Family & Friends</h2>
+        <p class="muted">A curated gallery. Add images to <code>assets/images/travel</code>, <code>assets/images/family</code> and <code>assets/images/friends</code> to populate.</p>
+        <div class="gallery-grid" id="galleryGrid">
+          <!-- gallery items added by JS -->
+        </div>
+      </section>
+
+      <section id="booking" class="panel">
+        <h2>Book Time</h2>
+        <p>Choose a slot. We require email verification before a booking is confirmed.</p>
+        <form id="bookingForm">
+          <label>Email <input id="bookEmail" type="email" required placeholder="you@example.com"/></label>
+          <label>Length
+            <select id="bookLength">
+              <option value="15">15 minutes</option>
+              <option value="30" selected>30 minutes</option>
+              <option value="45">45 minutes</option>
+            </select>
+          </label>
+          <label>Preferred time (UTC) <input id="bookTime" type="datetime-local" required /></label>
+          <div class="booking-actions">
+            <button type="submit" class="btn primary">Request slot & verify email</button>
+          </div>
+          <p class="muted small">This site uses Firebase (client-only) to manage verification and bookings. See README to configure Firebase project and Firestore rules.</p>
+        </form>
+        <div id="bookingStatus"></div>
+      </section>
+
+      <section id="contact" class="panel">
+        <h2>Contact & Links</h2>
+        <ul class="links">
+          <li>Email: <a href="mailto:champ.srijeet@gmail.com">champ.srijeet@gmail.com</a></li>
+          <li>LinkedIn: <a href="https://www.linkedin.com/in/srijeet-chatterjee-a85b0338/" target="_blank">/in/srijeet-chatterjee-a85b0338</a></li>
+          <li>Medium: <a href="https://medium.com/@srijeetchatterjee" target="_blank">@srijeetchatterjee</a></li>
+          <li>GitHub: <a href="https://github.com/chatterjeesrijeet?tab=repositories" target="_blank">chatterjeesrijeet</a></li>
+          <li>LeetCode: <a href="https://leetcode.com/u/srijeet_chatterjee/" target="_blank">srijeet_chatterjee</a></li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>© Srijeet Chatterjee — Built with focus on clarity, performance and product outcomes.</small>
+      </div>
+    </footer>
+
+    <script src="assets/js/firebase-config.example.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
