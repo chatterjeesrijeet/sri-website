@@ -2,160 +2,180 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Srijeet Chatterjee — AI / ML Engineer</title>
-    <meta name="description" content="Srijeet Chatterjee — AI/ML Engineer. 10+ years experience building end-to-end ML systems, interview prep mentor, and creator." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Srijeet Chatterjee — Senior AI/ML Engineer</title>
+    <meta name="description" content="Portfolio of Srijeet Chatterjee — Generative AI leader, ML engineer, mentor and strategist." />
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="icon" href="assets/images/profile/sri_profile_image.HEIC" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-grid">
-        <div class="brand">
-          <img class="avatar" src="assets/images/profile/sri_profile_image.HEIC" alt="Srijeet Chatterjee" />
-          <div>
-            <h1>Srijeet Chatterjee</h1>
-            <p class="tagline">AI / ML Engineer • Technical leader • Mentor</p>
-          </div>
-        </div>
-        <nav class="nav">
-          <a href="#about">About</a>
-          <a href="#work">Experience</a>
+    <div class="topbar">Srijeet Chatterjee - Senior AI/ML Engineer</div>
+    <header class="nav-shell" id="siteNav">
+      <div class="container nav-inner">
+        <a class="logo" href="#hero">SC.</a>
+        <nav class="nav-links" id="navLinks">
+          <a href="#hero">About</a>
+          <a href="#experience">Experience</a>
           <a href="#skills">Skills</a>
-          <a href="#gallery">Travel & Family</a>
-          <a href="#booking">Book</a>
-          <a href="#contact">Contact</a>
+          <a href="#mentorship">Mentorship</a>
+          <a href="#lifestyle">Life & Travels</a>
         </nav>
+        <a class="btn nav-cta" href="#booking">Book a Slot</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </header>
 
-    <main class="container">
-      <section id="hero" class="hero">
-        <div class="hero-left">
-          <h2>Exceptional AI & ML Engineering. Pragmatic product thinking.</h2>
-          <p class="lead">I build production-grade ML systems end-to-end — from problem framing and data pipelines to models and productized infra. I’ve led teams that delivered measurable business impact, scaled models to millions of users, and mentored engineers through FAANG interview prep.</p>
-          <div class="hero-cta">
-            <a class="btn primary" href="#booking">Book a slot</a>
-            <a class="btn" href="assets/docs/resume.pdf" download>Download Resume</a>
-          </div>
-          <div class="meta">
-            <span id="visits">Visits: —</span>
-            <button id="likeBtn" class="like">❤ Like</button>
-            <span id="likes">0</span>
-          </div>
-        </div>
-        <div class="hero-right">
-          <div class="cards">
-            <div class="card">
-              <h3>10+ Years</h3>
-              <p>AI / ML engineering & leadership — delivering business outcomes.</p>
+    <main>
+      <section id="hero" class="section hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="pill">AI / ML Leader</div>
+            <h1 id="heroTitle">Hello, I'm <span class="accent" id="heroName">Srijeet Chatterjee</span></h1>
+            <p class="hero-tagline" id="heroTagline">Architecting 0-to-1 AI Solutions | Generative AI Leader | 10+ Years Experience</p>
+            <p class="hero-summary" id="heroSummary">
+              Exceptional Data Science Professional with a proven track record of delivering innovative AI-powered solutions. Expertise in leading cross-functional teams, developing advanced ML models, and implementing state-of-the-art algorithms from data collection to deployment.
+            </p>
+            <div class="social-row" id="socialRow"></div>
+            <div class="hero-actions">
+              <a class="btn primary" href="#experience">View Experience</a>
+              <a class="btn outline" href="context_docs/chatterjeeSrijeet.pdf" download>Download Resume</a>
             </div>
-            <div class="card">
-              <h3>0 → 1 Products</h3>
-              <p>Led multiple initiatives taking prototypes to production with strong metrics and customer impact.</p>
+            <div class="hero-stats">
+              <div class="stat" id="visitsStat"></div>
+              <button class="stat like" id="likeButton" type="button"></button>
             </div>
-            <div class="card">
-              <h3>Interview Prep</h3>
-              <p>FAANG interview guidance, mock interviews and ML system design coaching.</p>
+          </div>
+          <div class="hero-photo">
+            <div class="photo-ring ring-a"></div>
+            <div class="photo-ring ring-b"></div>
+            <div class="photo-frame">
+              <img id="profilePhoto" src="" alt="Srijeet Chatterjee" />
             </div>
           </div>
         </div>
       </section>
 
-      <section id="about" class="panel">
-        <h2>About</h2>
-        <p>I combine deep technical expertise in machine learning with product and customer-first thinking. I focus on high-leverage problems: building systems that are reliable, explainable, and measurable. My approach blends rigorous experimentation with pragmatic engineering to ship results quickly and safely.</p>
-        <ul class="highlights">
-          <li>Led teams to deploy large-scale ML solutions with measurable KPI improvements.</li>
-          <li>Experienced mentor for data scientists and ML engineers preparing for interviews.</li>
-          <li>Strong track-record in stakeholder communication and strategic roadmapping.</li>
-        </ul>
-      </section>
-
-      <section id="work" class="panel">
-        <h2>Selected Experience</h2>
-        <div class="experience-grid">
-          <article class="exp">
-            <h3>Senior ML Lead — Product AI</h3>
-            <p class="muted">(Strategic leadership, end-to-end ML systems)</p>
-            <ul>
-              <li>Led end-to-end development of personalized recommendation pipelines serving millions of users; reduced latency by 5x and improved engagement by 20%.</li>
-              <li>Drove roadmap, stakeholder alignment and measurement plans to convert ML outcomes into product KPIs.</li>
-            </ul>
-          </article>
-          <article class="exp">
-            <h3>AI Engineer — Applied ML</h3>
-            <p class="muted">(Data, modeling & deployment)</p>
-            <ul>
-              <li>Built robust feature stores, offline/online training and CI/CD for models; created monitoring and alerting to ensure model health in production.</li>
-              <li>Mento red junior engineers and designed interview prep sessions focused on system design and ML coding.</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section id="skills" class="panel">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-          <div class="skill">Machine Learning</div>
-          <div class="skill">Deep Learning</div>
-          <div class="skill">MLOps & Infra</div>
-          <div class="skill">Data Engineering</div>
-          <div class="skill">Model Interpretability</div>
-          <div class="skill">Systems Design</div>
-          <div class="skill">Interview Coaching</div>
-        </div>
-      </section>
-
-      <section id="gallery" class="panel">
-        <h2>Travel, Family & Friends</h2>
-        <p class="muted">A curated gallery. Add images to <code>assets/images/travel</code>, <code>assets/images/family</code> and <code>assets/images/friends</code> to populate.</p>
-        <div class="gallery-grid" id="galleryGrid">
-          <!-- gallery items added by JS -->
-        </div>
-      </section>
-
-      <section id="booking" class="panel">
-        <h2>Book Time</h2>
-        <p>Choose a slot. We require email verification before a booking is confirmed.</p>
-        <form id="bookingForm">
-          <label>Email <input id="bookEmail" type="email" required placeholder="you@example.com"/></label>
-          <label>Length
-            <select id="bookLength">
-              <option value="15">15 minutes</option>
-              <option value="30" selected>30 minutes</option>
-              <option value="45">45 minutes</option>
-            </select>
-          </label>
-          <label>Preferred time (UTC) <input id="bookTime" type="datetime-local" required /></label>
-          <div class="booking-actions">
-            <button type="submit" class="btn primary">Request slot & verify email</button>
+      <section id="experience" class="section section-journey">
+        <div class="container">
+          <div class="section-header">
+            <h2>Professional Journey</h2>
+            <div class="underline"></div>
           </div>
-          <p class="muted small">This site uses Firebase (client-only) to manage verification and bookings. See README to configure Firebase project and Firestore rules.</p>
-        </form>
-        <div id="bookingStatus"></div>
+          <div class="journey-grid">
+            <div class="journey-col">
+              <div class="col-title">
+                <svg viewBox="0 0 24 24" class="icon"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M2 13h20"></path></svg>
+                Work Experience
+              </div>
+              <div id="experienceList" class="timeline"></div>
+            </div>
+            <div class="journey-col side">
+              <div class="col-title">
+                <svg viewBox="0 0 24 24" class="icon"><path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/><path d="M12 19v3"/></svg>
+                Education
+              </div>
+              <div id="educationList" class="edu-cards"></div>
+              <div class="card achievements">
+                <h3>Key Achievements</h3>
+                <ul id="achievementsList"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section id="contact" class="panel">
-        <h2>Contact & Links</h2>
-        <ul class="links">
-          <li>Email: <a href="mailto:champ.srijeet@gmail.com">champ.srijeet@gmail.com</a></li>
-          <li>LinkedIn: <a href="https://www.linkedin.com/in/srijeet-chatterjee-a85b0338/" target="_blank">/in/srijeet-chatterjee-a85b0338</a></li>
-          <li>Medium: <a href="https://medium.com/@srijeetchatterjee" target="_blank">@srijeetchatterjee</a></li>
-          <li>GitHub: <a href="https://github.com/chatterjeesrijeet?tab=repositories" target="_blank">chatterjeesrijeet</a></li>
-          <li>LeetCode: <a href="https://leetcode.com/u/srijeet_chatterjee/" target="_blank">srijeet_chatterjee</a></li>
-        </ul>
+      <section id="skills" class="section section-skills">
+        <div class="container">
+          <div class="section-header">
+            <h2>Technical Arsenal</h2>
+            <div class="underline"></div>
+          </div>
+          <div id="skillsGrid" class="skills-grid"></div>
+        </div>
       </section>
 
+      <section id="mentorship" class="section section-mentorship">
+        <div class="container">
+          <div class="section-header">
+            <h2>Mentorship & Guidance</h2>
+            <div class="underline"></div>
+          </div>
+          <div id="mentorshipGrid" class="mentorship-grid"></div>
+          <div id="booking" class="booking-cta">
+            <button id="bookingBtn" class="btn primary large"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Schedule a Meeting</button>
+            <p class="muted note">Verification required. Available slots: 15, 30, 45 mins.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="lifestyle" class="section section-lifestyle">
+        <div class="container">
+          <div class="section-header">
+            <h2>Beyond Code</h2>
+            <div class="underline"></div>
+          </div>
+          <div class="filter-row" id="photoFilters">
+            <button data-filter="all" class="filter active">All</button>
+            <button data-filter="travel" class="filter">Travel</button>
+            <button data-filter="family" class="filter">Family</button>
+            <button data-filter="friends" class="filter">Friends</button>
+          </div>
+          <div id="photoGrid" class="photo-grid"></div>
+        </div>
+      </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <small>© Srijeet Chatterjee — Built with focus on clarity, performance and product outcomes.</small>
+    <div id="photoModal" class="photo-modal">
+      <button id="photoModalClose" class="photo-modal-close" aria-label="Close photo">×</button>
+      <img id="photoModalImg" alt="Expanded view" />
+    </div>
+
+    <footer id="contact" class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <h3>Srijeet Chatterjee</h3>
+          <p class="muted">Senior Machine Learning Engineer helping businesses scale with AI. Let's build the future together.</p>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="footer-list" id="contactList"></ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <div class="social-row footer-social" id="footerSocial"></div>
+        </div>
       </div>
+      <div class="footer-bottom">© <span id="year"></span> Srijeet Chatterjee. All rights reserved.</div>
     </footer>
 
-    <script src="assets/js/firebase-config.example.js"></script>
+    <div id="bookingModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose" aria-label="Close booking modal">×</button>
+        <h3>Book a Session</h3>
+        <p class="muted small">Pick a slot length and verify your email to confirm.</p>
+        <div class="modal-row" id="durationRow">
+          <button class="pill-btn" data-duration="15">15 min</button>
+          <button class="pill-btn" data-duration="30">30 min</button>
+          <button class="pill-btn" data-duration="45">45 min</button>
+        </div>
+        <label class="modal-label">Email
+          <input type="email" id="modalEmail" placeholder="you@company.com" />
+        </label>
+        <label class="modal-label">Verification Code
+          <input type="text" id="modalCode" placeholder="1234" />
+        </label>
+        <div class="modal-actions">
+          <button class="btn primary" id="sendCodeBtn">Send verification</button>
+          <button class="btn outline" id="confirmBookingBtn">Confirm booking</button>
+        </div>
+        <div class="modal-status" id="modalStatus"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <script src="assets/js/app.js"></script>
   </body>
 </html>

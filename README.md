@@ -24,6 +24,12 @@ Quick setup (required to enable bookings, counters)
 4. Copy `assets/js/firebase-config.example.js` to `assets/js/firebase-config.js` and paste your Firebase config
 5. (Optional) Set Firestore rules for production (see example inside the example config file)
 
+Calendly setup (recommended — much less setup than building calendar invites)
+1. Create a Calendly account and create your event types (15, 30, 45 minute options recommended).
+2. Copy your Calendly link (e.g. `https://calendly.com/your-username`).
+3. Copy `assets/js/calendly-config.example.js` to `assets/js/calendly-config.js` and replace the URL.
+4. Reload your site — the inline Calendly scheduler will appear in the "Schedule a Meeting" section and the fallback booking form will be hidden.
+
 Deployment to GitHub Pages
 1. Push the repo to GitHub (this repository). On GitHub go to Settings -> Pages -> Source: `gh-pages` or `main` branch / `root`.
 2. GitHub Pages will serve `index.html` from the branch you choose. This site is static and uses client-side Firebase for bookings/verification.
@@ -40,3 +46,7 @@ Next steps (recommended)
 If you want, I can now:
 - Wire a Cloud Function to create calendar invites and finalize bookings, or
 - Replace the static booking flow with Calendly/Google Calendar integration.
+
+Notes on preference
+- If you want Calendly (fast, reliable): follow the Calendly setup above. No Firebase needed for bookings.
+- If you want a fully self-hosted flow (email verification + Firestore storage): use the Firebase flow already present. For production, combine Firestore triggers + Cloud Functions to emit calendar invites.
