@@ -1,1 +1,4 @@
 assets/images/backup/
+.DS_Store
+.env
+.env.local
