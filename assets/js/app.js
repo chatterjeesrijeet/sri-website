@@ -161,8 +161,7 @@
       "assets/images/friends/IMG_2974.jpg",
       "assets/images/friends/IMG_3048.jpg",
       "assets/images/friends/IMG_0541.jpg",
-      "assets/images/friends/IMG_3074.jpg",
-      "assets/images/friends/59180302-983f-4180-9f19-515ba0916939.jpg"
+      "assets/images/friends/IMG_3074.jpg"
     ]
   };
 
