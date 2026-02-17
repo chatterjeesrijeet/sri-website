@@ -622,10 +622,10 @@
   }
 
   function initBookingModal(){
-    // EmailJS Configuration - Replace with your actual keys after setup
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Get from EmailJS dashboard
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // Get from EmailJS dashboard
-    const EMAILJS_OTP_TEMPLATE = "YOUR_OTP_TEMPLATE_ID"; // Template for OTP emails
+    // EmailJS Configuration
+    const EMAILJS_PUBLIC_KEY = "NZxNsxde8OaH9yWYG";
+    const EMAILJS_SERVICE_ID = "service_x40eb4n";
+    const EMAILJS_OTP_TEMPLATE = "template_znvifkm";
     const OWNER_EMAIL = "champ.srijeet@gmail.com";
     const OWNER_WHATSAPP = "918820168039";
 
