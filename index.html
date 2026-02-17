@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Srijeet Chatterjee — AI Engineering Lead | Senior ML Engineer</title>
     <meta name="description" content="Portfolio of Srijeet Chatterjee — AI Engineering Lead with 11+ years experience in enterprise AI transformation, agentic AI platforms, and ML systems." />
-    <link rel="stylesheet" href="assets/css/style.css?v=7" />
+    <link rel="stylesheet" href="assets/css/style.css?v=8" />
     <link rel="icon" href="assets/images/profile/sri_profile_image.HEIC" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
@@ -152,30 +152,64 @@
     </footer>
 
     <div id="bookingModal" class="modal hidden">
-      <div class="modal-content">
+      <div class="modal-content booking-modal">
         <button class="modal-close" id="modalClose" aria-label="Close booking modal">×</button>
         <h3>Book a Session</h3>
-        <p class="muted small">Pick a slot length and verify your email to confirm.</p>
-        <div class="modal-row" id="durationRow">
-          <button class="pill-btn" data-duration="15">15 min</button>
-          <button class="pill-btn" data-duration="30">30 min</button>
-          <button class="pill-btn" data-duration="45">45 min</button>
+        <p class="muted small">Verify your email first, then fill in the details. <span class="tz-note">Slots in IST (Indian Standard Time) • Weekends only</span></p>
+
+        <!-- Step 1: Email Verification -->
+        <div id="step1" class="booking-step">
+          <label class="modal-label">Email Address
+            <input type="email" id="modalEmail" placeholder="you@company.com" />
+          </label>
+          <div class="otp-row">
+            <label class="modal-label otp-label">Verification Code
+              <input type="text" id="modalCode" placeholder="Enter 6-digit OTP" maxlength="6" disabled />
+            </label>
+            <button class="btn primary" id="sendCodeBtn">Send OTP</button>
+          </div>
+          <button class="btn primary full-width" id="verifyOtpBtn" disabled>Verify & Continue</button>
         </div>
-        <label class="modal-label">Email
-          <input type="email" id="modalEmail" placeholder="you@company.com" />
-        </label>
-        <label class="modal-label">Verification Code
-          <input type="text" id="modalCode" placeholder="1234" />
-        </label>
-        <div class="modal-actions">
-          <button class="btn primary" id="sendCodeBtn">Send verification</button>
-          <button class="btn outline" id="confirmBookingBtn">Confirm booking</button>
+
+        <!-- Step 2: Booking Details (Initially Disabled) -->
+        <div id="step2" class="booking-step disabled-step">
+          <div class="form-row">
+            <label class="modal-label half">First Name
+              <input type="text" id="modalFirstName" placeholder="Srijeet" disabled />
+            </label>
+            <label class="modal-label half">Last Name
+              <input type="text" id="modalLastName" placeholder="Chatterjee" disabled />
+            </label>
+          </div>
+          <label class="modal-label">Phone Number
+            <input type="tel" id="modalPhone" placeholder="+91-9876543210" disabled />
+          </label>
+          <label class="modal-label">Session Duration
+            <div class="modal-row" id="durationRow">
+              <button class="pill-btn" data-duration="15" disabled>15 min</button>
+              <button class="pill-btn" data-duration="30" disabled>30 min</button>
+              <button class="pill-btn" data-duration="45" disabled>45 min</button>
+            </div>
+          </label>
+          <div class="form-row">
+            <label class="modal-label half">Select Date
+              <input type="date" id="modalDate" disabled />
+            </label>
+            <label class="modal-label half">Select Time (IST)
+              <select id="modalTime" disabled>
+                <option value="">Choose a slot</option>
+              </select>
+            </label>
+          </div>
+          <button class="btn primary full-width" id="confirmBookingBtn" disabled>Confirm Booking</button>
         </div>
+
         <div class="modal-status" id="modalStatus"></div>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-    <script src="assets/js/app.js?v=5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="assets/js/app.js?v=6"></script>
   </body>
 </html>

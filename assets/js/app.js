@@ -622,60 +622,306 @@
   }
 
   function initBookingModal(){
+    // EmailJS Configuration - Replace with your actual keys after setup
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Get from EmailJS dashboard
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // Get from EmailJS dashboard
+    const EMAILJS_OTP_TEMPLATE = "YOUR_OTP_TEMPLATE_ID"; // Template for OTP emails
+    const OWNER_EMAIL = "champ.srijeet@gmail.com";
+    const OWNER_WHATSAPP = "918820168039";
+
+    // DOM Elements
     const openBtn = document.getElementById("bookingBtn");
     const modal = document.getElementById("bookingModal");
     const closeBtn = document.getElementById("modalClose");
-    const durationButtons = Array.from(document.querySelectorAll(".pill-btn"));
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
     const emailInput = document.getElementById("modalEmail");
     const codeInput = document.getElementById("modalCode");
     const sendBtn = document.getElementById("sendCodeBtn");
+    const verifyBtn = document.getElementById("verifyOtpBtn");
+    const firstNameInput = document.getElementById("modalFirstName");
+    const lastNameInput = document.getElementById("modalLastName");
+    const phoneInput = document.getElementById("modalPhone");
+    const dateInput = document.getElementById("modalDate");
+    const timeSelect = document.getElementById("modalTime");
+    const durationButtons = Array.from(document.querySelectorAll("#durationRow .pill-btn"));
     const confirmBtn = document.getElementById("confirmBookingBtn");
     const status = document.getElementById("modalStatus");
 
-    let duration = null;
-    const show = () => modal && modal.classList.remove("hidden");
-    const hide = () => modal && modal.classList.add("hidden");
+    // State
+    let generatedOTP = null;
+    let otpExpiry = null;
+    let isVerified = false;
+    let selectedDuration = null;
 
+    // Helper functions
+    const showStatus = (msg, isError = false) => {
+      status.textContent = msg;
+      status.style.color = isError ? "#f87171" : "#10b981";
+    };
+
+    const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+    const show = () => {
+      modal && modal.classList.remove("hidden");
+      resetModal();
+    };
+
+    const hide = () => {
+      modal && modal.classList.add("hidden");
+      resetModal();
+    };
+
+    const resetModal = () => {
+      isVerified = false;
+      generatedOTP = null;
+      otpExpiry = null;
+      selectedDuration = null;
+      emailInput.value = "";
+      codeInput.value = "";
+      codeInput.disabled = true;
+      verifyBtn.disabled = true;
+      firstNameInput.value = "";
+      lastNameInput.value = "";
+      phoneInput.value = "";
+      dateInput.value = "";
+      timeSelect.innerHTML = '<option value="">Choose a slot</option>';
+      step2.classList.add("disabled-step");
+      [firstNameInput, lastNameInput, phoneInput, dateInput, timeSelect, confirmBtn].forEach(el => el.disabled = true);
+      durationButtons.forEach(btn => { btn.disabled = true; btn.classList.remove("active"); });
+      status.textContent = "";
+    };
+
+    // Setup date picker - weekends only, 48 hours minimum
+    const setupDatePicker = () => {
+      const now = new Date();
+      const minDate = new Date(now.getTime() + 48 * 60 * 60 * 1000); // 48 hours from now
+
+      // Find next available weekend
+      while (minDate.getDay() !== 0 && minDate.getDay() !== 6) {
+        minDate.setDate(minDate.getDate() + 1);
+      }
+
+      // Set min date
+      dateInput.min = minDate.toISOString().split('T')[0];
+
+      // Set max date (3 months ahead)
+      const maxDate = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+      dateInput.max = maxDate.toISOString().split('T')[0];
+    };
+
+    // Populate time slots (10 AM - 6 PM IST)
+    const populateTimeSlots = () => {
+      timeSelect.innerHTML = '<option value="">Choose a slot</option>';
+      const slots = [];
+      for (let hour = 10; hour < 18; hour++) {
+        const h12 = hour > 12 ? hour - 12 : hour;
+        const ampm = hour >= 12 ? "PM" : "AM";
+        slots.push({ value: `${hour}:00`, label: `${h12}:00 ${ampm}` });
+        slots.push({ value: `${hour}:30`, label: `${h12}:30 ${ampm}` });
+      }
+      slots.push({ value: "18:00", label: "6:00 PM" });
+
+      slots.forEach(slot => {
+        const opt = document.createElement("option");
+        opt.value = slot.value;
+        opt.textContent = slot.label + " IST";
+        timeSelect.appendChild(opt);
+      });
+    };
+
+    // Validate weekend selection
+    dateInput.addEventListener("change", () => {
+      const selected = new Date(dateInput.value);
+      const day = selected.getDay();
+      if (day !== 0 && day !== 6) {
+        showStatus("Please select a weekend (Saturday or Sunday)", true);
+        dateInput.value = "";
+      } else {
+        status.textContent = "";
+      }
+    });
+
+    // Modal open/close
     openBtn && openBtn.addEventListener("click", show);
     closeBtn && closeBtn.addEventListener("click", hide);
-    modal && modal.addEventListener("click", (e)=>{ if(e.target === modal) hide(); });
+    modal && modal.addEventListener("click", (e) => { if (e.target === modal) hide(); });
 
+    // Send OTP
+    sendBtn && sendBtn.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      if (!email || !email.includes("@") || !email.includes(".")) {
+        showStatus("Please enter a valid email address.", true);
+        return;
+      }
+
+      sendBtn.disabled = true;
+      sendBtn.textContent = "Sending...";
+
+      generatedOTP = generateOTP();
+      otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes validity
+
+      // Try to send via EmailJS
+      try {
+        if (window.emailjs && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_OTP_TEMPLATE, {
+            to_email: email,
+            otp_code: generatedOTP,
+            expiry_minutes: "10"
+          });
+          showStatus(`OTP sent to ${email}. Check your inbox.`);
+        } else {
+          // Demo mode - show OTP in console (remove in production)
+          console.log("Demo OTP:", generatedOTP);
+          showStatus(`Demo mode: OTP is ${generatedOTP} (configure EmailJS for production)`);
+        }
+        codeInput.disabled = false;
+        verifyBtn.disabled = false;
+        codeInput.focus();
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        showStatus("Failed to send OTP. Please try again.", true);
+      }
+
+      sendBtn.disabled = false;
+      sendBtn.textContent = "Resend OTP";
+    });
+
+    // Verify OTP
+    verifyBtn && verifyBtn.addEventListener("click", () => {
+      const enteredOTP = codeInput.value.trim();
+
+      if (!generatedOTP || Date.now() > otpExpiry) {
+        showStatus("OTP expired. Please request a new one.", true);
+        return;
+      }
+
+      if (enteredOTP !== generatedOTP) {
+        showStatus("Invalid OTP. Please try again.", true);
+        return;
+      }
+
+      // OTP verified - enable step 2
+      isVerified = true;
+      showStatus("Email verified! Please fill in the booking details.");
+
+      step2.classList.remove("disabled-step");
+      [firstNameInput, lastNameInput, phoneInput, dateInput, timeSelect, confirmBtn].forEach(el => el.disabled = false);
+      durationButtons.forEach(btn => btn.disabled = false);
+
+      setupDatePicker();
+      populateTimeSlots();
+      firstNameInput.focus();
+    });
+
+    // Duration selection
     durationButtons.forEach(btn => {
-      btn.addEventListener("click", ()=>{
+      btn.addEventListener("click", () => {
+        if (btn.disabled) return;
         durationButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        duration = btn.dataset.duration;
+        selectedDuration = btn.dataset.duration;
       });
     });
 
-    sendBtn && sendBtn.addEventListener("click", ()=>{
-      status.textContent = "";
-      const email = emailInput.value.trim();
-      if(!email.includes("@")){
-        status.textContent = "Please enter a valid email.";
-        status.style.color = "#f87171";
+    // Confirm booking
+    confirmBtn && confirmBtn.addEventListener("click", () => {
+      if (!isVerified) {
+        showStatus("Please verify your email first.", true);
         return;
       }
-      status.textContent = "Verification code sent to " + email;
-      status.style.color = "#10b981";
+
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const date = dateInput.value;
+      const time = timeSelect.value;
+      const email = emailInput.value.trim();
+
+      // Validation
+      if (!firstName || !lastName) {
+        showStatus("Please enter your full name.", true);
+        return;
+      }
+      if (!phone || phone.length < 10) {
+        showStatus("Please enter a valid phone number.", true);
+        return;
+      }
+      if (!selectedDuration) {
+        showStatus("Please select a session duration.", true);
+        return;
+      }
+      if (!date) {
+        showStatus("Please select a date.", true);
+        return;
+      }
+      if (!time) {
+        showStatus("Please select a time slot.", true);
+        return;
+      }
+
+      // Format date nicely
+      const dateObj = new Date(date);
+      const formattedDate = dateObj.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Create WhatsApp message
+      const message = `🗓️ *New Booking Request*
+
+*From:* ${firstName} ${lastName}
+*Email:* ${email}
+*Phone:* ${phone}
+
+*Session:* ${selectedDuration} minutes
+*Date:* ${formattedDate}
+*Time:* ${time} IST
+
+Please confirm availability.`;
+
+      const whatsappUrl = `https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(message)}`;
+
+      // Show confirmation message
+      showStatus("Redirecting to WhatsApp to confirm your booking...");
+
+      // Show success modal content
+      setTimeout(() => {
+        const modalContent = modal.querySelector(".modal-content");
+        modalContent.innerHTML = `
+          <button class="modal-close" id="modalCloseSuccess" aria-label="Close">×</button>
+          <div class="booking-success">
+            <div class="success-icon">✓</div>
+            <h3>Booking Request Submitted!</h3>
+            <p class="muted">Thank you, ${firstName}!</p>
+            <p>I'll review your request and get back to you within <strong>24 hours</strong> to confirm availability.</p>
+            <div class="booking-summary">
+              <p><strong>Session:</strong> ${selectedDuration} minutes</p>
+              <p><strong>Date:</strong> ${formattedDate}</p>
+              <p><strong>Time:</strong> ${time} IST</p>
+            </div>
+            <p class="muted small">A WhatsApp message has been prepared. Please send it to complete your request.</p>
+            <a href="${whatsappUrl}" target="_blank" class="btn primary full-width whatsapp-btn">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Send WhatsApp Message
+            </a>
+          </div>
+        `;
+
+        // Re-attach close button listener
+        document.getElementById("modalCloseSuccess").addEventListener("click", () => {
+          hide();
+          location.reload(); // Reload to reset modal
+        });
+      }, 500);
     });
 
-    confirmBtn && confirmBtn.addEventListener("click", ()=>{
-      const email = emailInput.value.trim();
-      const code = codeInput.value.trim();
-      if(!duration){
-        status.textContent = "Pick a slot length first.";
-        status.style.color = "#f87171";
-        return;
-      }
-      if(!email || !code){
-        status.textContent = "Enter email and the verification code.";
-        status.style.color = "#f87171";
-        return;
-      }
-      status.textContent = `Booked ${duration} min session for ${email}.`;
-      status.style.color = "#10b981";
-    });
+    // Initialize EmailJS
+    if (window.emailjs && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
   }
 
   function renderPhotosAndFilters(){
