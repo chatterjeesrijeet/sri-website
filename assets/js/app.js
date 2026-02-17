@@ -622,11 +622,8 @@
   }
 
   function initBookingModal(){
-    // EmailJS Configuration
-    const EMAILJS_PUBLIC_KEY = "NZxNsxde8OaH9yWYG";
-    const EMAILJS_SERVICE_ID = "service_x40eb4n";
-    const EMAILJS_OTP_TEMPLATE = "template_znvifkm";
-    const OWNER_EMAIL = "champ.srijeet@gmail.com";
+    // Secure API Configuration (credentials hidden on server)
+    const API_BASE_URL = "https://booking-api-psi.vercel.app";
     const OWNER_WHATSAPP = "918820168039";
 
     // DOM Elements
@@ -660,16 +657,7 @@
       status.style.color = isError ? "#f87171" : "#10b981";
     };
 
-    const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
-
-    // SHA-256 hash function using Web Crypto API
-    const hashOTP = async (otp) => {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(otp + "_booking_salt_2025");
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    };
+    // OTP is now generated and hashed on the server (Vercel API)
 
     const show = () => {
       modal && modal.classList.remove("hidden");
@@ -756,7 +744,7 @@
     closeBtn && closeBtn.addEventListener("click", hide);
     modal && modal.addEventListener("click", (e) => { if (e.target === modal) hide(); });
 
-    // Send OTP
+    // Send OTP via secure Vercel API
     sendBtn && sendBtn.addEventListener("click", async () => {
       const email = emailInput.value.trim();
       if (!email || !email.includes("@") || !email.includes(".")) {
@@ -767,29 +755,27 @@
       sendBtn.disabled = true;
       sendBtn.textContent = "Sending...";
 
-      const plainOTP = generateOTP();
-      otpHash = await hashOTP(plainOTP);  // Store hash, not plain OTP
-      otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes validity
-
-      // Try to send via EmailJS
       try {
-        if (window.emailjs && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_OTP_TEMPLATE, {
-            to_email: email,
-            otp_code: plainOTP,  // Send plain OTP to email
-            expiry_minutes: "10"
-          });
+        const response = await fetch(`${API_BASE_URL}/api/send-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          otpHash = data.otpHash;    // Hash returned from server
+          otpExpiry = data.expiry;   // Expiry timestamp from server
           showStatus(`OTP sent to ${email}. Check your inbox.`);
+          codeInput.disabled = false;
+          verifyBtn.disabled = false;
+          codeInput.focus();
         } else {
-          // Demo mode - show OTP in console (remove in production)
-          console.log("Demo OTP:", plainOTP);
-          showStatus(`Demo mode: OTP is ${plainOTP} (configure EmailJS for production)`);
+          showStatus(data.error || "Failed to send OTP. Please try again.", true);
         }
-        codeInput.disabled = false;
-        verifyBtn.disabled = false;
-        codeInput.focus();
       } catch (err) {
-        console.error("EmailJS error:", err);
+        console.error("API error:", err);
         showStatus("Failed to send OTP. Please try again.", true);
       }
 
@@ -797,21 +783,42 @@
       sendBtn.textContent = "Resend OTP";
     });
 
-    // Verify OTP
+    // Verify OTP via secure Vercel API
     verifyBtn && verifyBtn.addEventListener("click", async () => {
       const enteredOTP = codeInput.value.trim();
 
-      if (!otpHash || Date.now() > otpExpiry) {
-        showStatus("OTP expired. Please request a new one.", true);
+      if (!otpHash || !otpExpiry) {
+        showStatus("Please request an OTP first.", true);
         return;
       }
 
-      // Hash the entered OTP and compare with stored hash
-      const enteredHash = await hashOTP(enteredOTP);
-      if (enteredHash !== otpHash) {
-        showStatus("Invalid OTP. Please try again.", true);
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = "Verifying...";
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/verify-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ otp: enteredOTP, otpHash, expiry: otpExpiry })
+        });
+
+        const data = await response.json();
+
+        if (!data.valid) {
+          showStatus(data.error || "Invalid OTP. Please try again.", true);
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = "Verify & Continue";
+          return;
+        }
+      } catch (err) {
+        console.error("API error:", err);
+        showStatus("Verification failed. Please try again.", true);
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = "Verify & Continue";
         return;
       }
+
+      verifyBtn.textContent = "Verified ✓";
 
       // OTP verified - enable step 2
       isVerified = true;
@@ -930,10 +937,7 @@ Please confirm availability.`;
       }, 500);
     });
 
-    // Initialize EmailJS
-    if (window.emailjs && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
+    // EmailJS no longer needed - using secure Vercel API
   }
 
   function renderPhotosAndFilters(){
