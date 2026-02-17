@@ -3,7 +3,7 @@
   const profile = {
     name: "Srijeet Chatterjee",
     title: "AI Engineering Lead | Senior Machine Learning Engineer",
-    tagline: "Launched the first neural-network enforcement model on a platform with 2.5B+ MAU | 11+ Years Experience",
+    tagline: "Architecting 0-to-1 AI Solutions | Generative AI Leader",
     summary: "AI Engineering Lead with 11+ years of experience driving enterprise-wide AI transformation. End-to-end ownership across the ML lifecycle—data strategy, model architecture, feature engineering, training, ML system design, A/B experimentation, deployment, and monitoring. Currently building production agentic AI platforms for media and advertising. Deep expertise in large-scale ML enforcement systems, LLM-powered applications, neural machine translation, and responsible AI.",
     contact: {
       phone: "+44-7767978269",
