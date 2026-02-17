@@ -219,11 +219,114 @@ Instead of using paid WhatsApp APIs, we use the free **Click-to-Chat** feature:
 
 ## Security Measures
 
-### OTP Security
+### Our Approach vs Big Tech Companies
+
+This is a **frontend-only** application with no backend server. Here's how our OTP implementation compares to enterprise systems:
+
+| Aspect | Our Implementation | Meta/Google/Banks |
+|--------|-------------------|-------------------|
+| OTP Storage | **Browser memory (client-side)** | **Server-side database** |
+| Verification | JavaScript compares locally | Server validates against DB |
+| Security Level | Basic (suitable for booking) | Enterprise-grade |
+| Infrastructure | Frontend only | Backend + Database |
+| Cost | $0 | $50-100+/month |
+
+#### How Big Companies Handle OTP (Server-Side):
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              META/GOOGLE/BANKS - SERVER-SIDE OTP                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   User                    Server                   Database      │
+│     │                       │                          │         │
+│     │  1. Request OTP       │                          │         │
+│     │──────────────────────>│                          │         │
+│     │                       │  2. Generate OTP         │         │
+│     │                       │  3. Hash & Store ────────>│        │
+│     │                       │     (with expiry)        │         │
+│     │  4. Send OTP email    │                          │         │
+│     │<──────────────────────│                          │         │
+│     │                       │                          │         │
+│     │  5. Submit OTP        │                          │         │
+│     │──────────────────────>│                          │         │
+│     │                       │  6. Fetch & Compare ─────>│        │
+│     │                       │  7. Validate expiry      │         │
+│     │                       │  8. Delete after use ────>│        │
+│     │  9. Success/Fail      │                          │         │
+│     │<──────────────────────│                          │         │
+│                                                                  │
+│   Security: OTP NEVER exposed to client browser                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Our Approach (Client-Side):
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              OUR APPROACH - CLIENT-SIDE OTP                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   Browser                          EmailJS                       │
+│     │                                 │                          │
+│     │  1. Generate OTP locally        │                          │
+│     │  2. Store in JS variable        │                          │
+│     │  3. Send same OTP via email ───>│──────> User's Inbox      │
+│     │                                 │                          │
+│     │  4. User enters OTP             │                          │
+│     │  5. Compare locally             │                          │
+│     │  (JS variable == user input?)   │                          │
+│     │                                 │                          │
+│   Security: OTP exists in browser memory (inspectable)           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Security Limitations (Transparency)
+
+**Can someone bypass the OTP verification?**
+
+Yes. Someone with technical knowledge can find the OTP in browser memory:
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                      OTP SECURITY                                 │
+│              HOW OTP CAN BE FOUND (Educational)                   │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│   Method 1: Browser DevTools (Console)                           │
+│   ├── Open DevTools (F12 or Cmd+Option+I)                        │
+│   ├── Go to Sources → app.js                                     │
+│   └── Set breakpoint on OTP variable → See value                 │
+│                                                                   │
+│   Method 2: Memory Inspection                                     │
+│   ├── DevTools → Memory tab                                      │
+│   ├── Take heap snapshot                                         │
+│   └── Search for 6-digit numbers                                 │
+│                                                                   │
+│   Method 3: Network Tab                                           │
+│   ├── Watch the EmailJS request                                  │
+│   └── OTP visible in request payload                             │
+│                                                                   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### Why This Is Acceptable for Our Use Case
+
+| Factor | Reasoning |
+|--------|-----------|
+| **Low stakes** | It's a booking request, not a bank transfer |
+| **No sensitive data** | No passwords, no payment info stored |
+| **Purpose** | Verify email ownership, reduce spam |
+| **Manual confirmation** | Owner confirms availability within 24 hours |
+| **Worst case scenario** | Someone books a fake slot → Owner ignores it |
+
+> **Bottom Line:** This is "good enough" security for a personal portfolio booking system.
+> For banking, e-commerce, or authentication systems - a server-side implementation is mandatory.
+
+### OTP Implementation Details
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                      OTP SECURITY FEATURES                        │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                   │
 │   ✓ 6-digit random OTP (100,000 - 999,999)                       │
