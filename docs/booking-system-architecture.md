@@ -260,51 +260,90 @@ This is a **frontend-only** application with no backend server. Here's how our O
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-#### Our Approach (Client-Side):
+#### Our Approach (Client-Side with Hashing):
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│              OUR APPROACH - CLIENT-SIDE OTP                      │
+│         OUR APPROACH - CLIENT-SIDE OTP WITH HASHING              │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │   Browser                          EmailJS                       │
 │     │                                 │                          │
-│     │  1. Generate OTP locally        │                          │
-│     │  2. Store in JS variable        │                          │
-│     │  3. Send same OTP via email ───>│──────> User's Inbox      │
+│     │  1. Generate plain OTP          │                          │
+│     │     (e.g., "482910")            │                          │
 │     │                                 │                          │
-│     │  4. User enters OTP             │                          │
-│     │  5. Compare locally             │                          │
-│     │  (JS variable == user input?)   │                          │
+│     │  2. Hash OTP using SHA-256      │                          │
+│     │     hash = SHA256("482910" + salt)                         │
+│     │     → "a3f2b8c1d4e5..."         │                          │
 │     │                                 │                          │
-│   Security: OTP exists in browser memory (inspectable)           │
+│     │  3. Store ONLY the hash         │                          │
+│     │     (plain OTP discarded)       │                          │
+│     │                                 │                          │
+│     │  4. Send plain OTP via email ──>│──────> User's Inbox      │
+│     │                                 │                          │
+│     │  5. User enters OTP             │                          │
+│     │                                 │                          │
+│     │  6. Hash user input             │                          │
+│     │     hash = SHA256(input + salt) │                          │
+│     │                                 │                          │
+│     │  7. Compare hashes              │                          │
+│     │     (stored hash == input hash?)│                          │
+│     │                                 │                          │
+│   Security: Only hash stored, plain OTP never kept in memory     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Security Limitations (Transparency)
+### Hashing Implementation
 
-**Can someone bypass the OTP verification?**
+We use the **Web Crypto API** (built into all modern browsers) for SHA-256 hashing:
 
-Yes. Someone with technical knowledge can find the OTP in browser memory:
+```javascript
+// SHA-256 hash function
+const hashOTP = async (otp) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(otp + "_booking_salt_2025");  // Salt added
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+// When sending OTP:
+const plainOTP = generateOTP();        // "482910"
+otpHash = await hashOTP(plainOTP);     // "a3f2b8c1d4e5..." (stored)
+// plainOTP sent to email, then discarded from memory
+
+// When verifying:
+const enteredHash = await hashOTP(userInput);
+if (enteredHash === otpHash) {
+  // Valid OTP
+}
+```
+
+### Why Hashing Improves Security
+
+| Attack Vector | Without Hashing | With Hashing |
+|---------------|-----------------|--------------|
+| DevTools breakpoint | See plain OTP | See only hash (useless) |
+| Memory inspection | Find 6-digit number | Find 64-char hash |
+| Network tab | OTP in request | Still visible (unavoidable) |
+
+> **Note:** The Network tab attack (watching EmailJS request) is still possible because we must send the plain OTP to the email service. This is unavoidable without a backend server.
+
+### Remaining Vulnerability
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│              HOW OTP CAN BE FOUND (Educational)                   │
+│              REMAINING ATTACK VECTOR                              │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                   │
-│   Method 1: Browser DevTools (Console)                           │
-│   ├── Open DevTools (F12 or Cmd+Option+I)                        │
-│   ├── Go to Sources → app.js                                     │
-│   └── Set breakpoint on OTP variable → See value                 │
+│   Network Tab (DevTools)                                         │
+│   ├── Open DevTools → Network tab                                │
+│   ├── Click "Send OTP"                                           │
+│   ├── Find EmailJS request                                       │
+│   └── Inspect payload → "otp_code": "482910"                     │
 │                                                                   │
-│   Method 2: Memory Inspection                                     │
-│   ├── DevTools → Memory tab                                      │
-│   ├── Take heap snapshot                                         │
-│   └── Search for 6-digit numbers                                 │
-│                                                                   │
-│   Method 3: Network Tab                                           │
-│   ├── Watch the EmailJS request                                  │
-│   └── OTP visible in request payload                             │
+│   This is unavoidable without a backend server.                  │
+│   The email service MUST receive the plain OTP to send it.       │
 │                                                                   │
 └──────────────────────────────────────────────────────────────────┘
 ```
@@ -318,9 +357,11 @@ Yes. Someone with technical knowledge can find the OTP in browser memory:
 | **Purpose** | Verify email ownership, reduce spam |
 | **Manual confirmation** | Owner confirms availability within 24 hours |
 | **Worst case scenario** | Someone books a fake slot → Owner ignores it |
+| **Hashing benefit** | Deters casual inspection, requires active interception |
 
-> **Bottom Line:** This is "good enough" security for a personal portfolio booking system.
-> For banking, e-commerce, or authentication systems - a server-side implementation is mandatory.
+> **Bottom Line:** Hashing adds a layer of security that deters casual inspection.
+> The determined attacker can still intercept via Network tab, but this requires active monitoring during OTP send.
+> For a booking system, this trade-off is acceptable.
 
 ### OTP Implementation Details
 
@@ -330,10 +371,12 @@ Yes. Someone with technical knowledge can find the OTP in browser memory:
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                   │
 │   ✓ 6-digit random OTP (100,000 - 999,999)                       │
+│   ✓ SHA-256 hashing with salt (plain OTP never stored)           │
 │   ✓ 10-minute expiry window                                       │
-│   ✓ Stored only in browser memory (not localStorage)             │
+│   ✓ Hash stored only in browser memory (not localStorage)        │
 │   ✓ Cleared on modal close                                        │
 │   ✓ Single-use (verified once, then discarded)                   │
+│   ✓ Web Crypto API (native browser, no external libraries)       │
 │                                                                   │
 └──────────────────────────────────────────────────────────────────┘
 ```

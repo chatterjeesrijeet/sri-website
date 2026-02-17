@@ -649,7 +649,7 @@
     const status = document.getElementById("modalStatus");
 
     // State
-    let generatedOTP = null;
+    let otpHash = null;  // Store hash instead of plain OTP
     let otpExpiry = null;
     let isVerified = false;
     let selectedDuration = null;
@@ -661,6 +661,15 @@
     };
 
     const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+    // SHA-256 hash function using Web Crypto API
+    const hashOTP = async (otp) => {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(otp + "_booking_salt_2025");
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    };
 
     const show = () => {
       modal && modal.classList.remove("hidden");
@@ -674,7 +683,7 @@
 
     const resetModal = () => {
       isVerified = false;
-      generatedOTP = null;
+      otpHash = null;
       otpExpiry = null;
       selectedDuration = null;
       emailInput.value = "";
@@ -758,7 +767,8 @@
       sendBtn.disabled = true;
       sendBtn.textContent = "Sending...";
 
-      generatedOTP = generateOTP();
+      const plainOTP = generateOTP();
+      otpHash = await hashOTP(plainOTP);  // Store hash, not plain OTP
       otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes validity
 
       // Try to send via EmailJS
@@ -766,14 +776,14 @@
         if (window.emailjs && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
           await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_OTP_TEMPLATE, {
             to_email: email,
-            otp_code: generatedOTP,
+            otp_code: plainOTP,  // Send plain OTP to email
             expiry_minutes: "10"
           });
           showStatus(`OTP sent to ${email}. Check your inbox.`);
         } else {
           // Demo mode - show OTP in console (remove in production)
-          console.log("Demo OTP:", generatedOTP);
-          showStatus(`Demo mode: OTP is ${generatedOTP} (configure EmailJS for production)`);
+          console.log("Demo OTP:", plainOTP);
+          showStatus(`Demo mode: OTP is ${plainOTP} (configure EmailJS for production)`);
         }
         codeInput.disabled = false;
         verifyBtn.disabled = false;
@@ -788,15 +798,17 @@
     });
 
     // Verify OTP
-    verifyBtn && verifyBtn.addEventListener("click", () => {
+    verifyBtn && verifyBtn.addEventListener("click", async () => {
       const enteredOTP = codeInput.value.trim();
 
-      if (!generatedOTP || Date.now() > otpExpiry) {
+      if (!otpHash || Date.now() > otpExpiry) {
         showStatus("OTP expired. Please request a new one.", true);
         return;
       }
 
-      if (enteredOTP !== generatedOTP) {
+      // Hash the entered OTP and compare with stored hash
+      const enteredHash = await hashOTP(enteredOTP);
+      if (enteredHash !== otpHash) {
         showStatus("Invalid OTP. Please try again.", true);
         return;
       }
