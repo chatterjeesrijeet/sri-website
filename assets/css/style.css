@@ -324,35 +324,138 @@ img { max-width: 100%; display: block; }
 
 .photo-ring {
   position: absolute;
-  inset: 0;
+  inset: -10px;
   border-radius: 50%;
-  border: 2px solid rgba(16,185,129,0.3);
-  animation: spin 14s linear infinite;
+  border: 2px solid transparent;
+  animation: spin 10s linear infinite, aura-breathe 4s ease-in-out infinite;
+  background: linear-gradient(#0a1324, #0a1324) padding-box,
+              linear-gradient(90deg, #10b981, #06b6d4, #8b5cf6, #10b981) border-box;
+  background-size: 100% 100%, 300% 300%;
 }
 
 .ring-b {
-  inset: 12px;
-  border-color: rgba(6,182,212,0.3);
-  animation-duration: 18s;
-  animation-direction: reverse;
+  inset: -5px;
+  animation: spin 15s linear infinite reverse, aura-breathe 4s ease-in-out infinite 1s;
+  background: linear-gradient(#0a1324, #0a1324) padding-box,
+              linear-gradient(90deg, #06b6d4, #8b5cf6, #10b981, #06b6d4) border-box;
+  background-size: 100% 100%, 300% 300%;
 }
 
 .photo-frame {
   position: absolute;
-  inset: 28px;
+  inset: 20px;
   border-radius: 50%;
   overflow: hidden;
-  border: 6px solid #0b1322;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+  border: 3px solid transparent;
+  background: linear-gradient(#0b1322, #0b1322) padding-box,
+              linear-gradient(135deg, #10b981, #06b6d4, #8b5cf6) border-box;
+  animation: frame-glow 4s ease-in-out infinite;
 }
 
 .photo-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+/* Dynamic aura glow behind the photo */
+.hero-photo::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(16,185,129,0.4) 0%,
+    rgba(6,182,212,0.3) 30%,
+    rgba(139,92,246,0.2) 50%,
+    transparent 70%);
+  animation: aura-pulse 4s ease-in-out infinite;
+  z-index: -1;
+}
+
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(16,185,129,0.2) 0%,
+    rgba(6,182,212,0.15) 40%,
+    transparent 60%);
+  animation: aura-pulse 4s ease-in-out infinite 2s;
+  z-index: -2;
+  filter: blur(20px);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes aura-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow:
+      0 0 20px rgba(16,185,129,0.3),
+      0 0 40px rgba(6,182,212,0.2),
+      0 0 60px rgba(139,92,246,0.1);
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    opacity: 0.8;
+    box-shadow:
+      0 0 40px rgba(16,185,129,0.5),
+      0 0 80px rgba(6,182,212,0.4),
+      0 0 120px rgba(139,92,246,0.2);
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 60px rgba(16,185,129,0.6),
+      0 0 100px rgba(6,182,212,0.5),
+      0 0 140px rgba(139,92,246,0.3);
+    transform: rotate(180deg) scale(1.02);
+  }
+  75% {
+    opacity: 0.7;
+    box-shadow:
+      0 0 30px rgba(16,185,129,0.4),
+      0 0 60px rgba(6,182,212,0.3),
+      0 0 90px rgba(139,92,246,0.15);
+  }
+}
+
+@keyframes aura-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes frame-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(16,185,129,0.5),
+      0 0 40px rgba(6,182,212,0.3),
+      0 0 60px rgba(139,92,246,0.2);
+  }
+  33% {
+    box-shadow:
+      0 0 30px rgba(6,182,212,0.6),
+      0 0 60px rgba(139,92,246,0.4),
+      0 0 90px rgba(16,185,129,0.2);
+  }
+  66% {
+    box-shadow:
+      0 0 25px rgba(139,92,246,0.5),
+      0 0 50px rgba(16,185,129,0.4),
+      0 0 75px rgba(6,182,212,0.3);
+  }
+}
 
 .section-journey {
   background: var(--bg-2);
