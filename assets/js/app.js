@@ -2,9 +2,9 @@
 (function(){
   const profile = {
     name: "Srijeet Chatterjee",
-    title: "Senior Machine Learning Engineer",
-    tagline: "Architecting 0-to-1 AI Solutions | Generative AI Leader | 10+ Years Experience",
-    summary: "Exceptional Data Science Professional with a proven track record of delivering innovative AI-powered solutions. Expertise in leading cross-functional teams, developing advanced ML models, and implementing state-of-the-art algorithms from data collection to deployment. Recognized for strategic thinking and driving measurable business outcomes.",
+    title: "AI Engineering Lead | Senior Machine Learning Engineer",
+    tagline: "Launched the first neural-network enforcement model on a platform with 2.5B+ MAU | 11+ Years Experience",
+    summary: "AI Engineering Lead with 11+ years of experience driving enterprise-wide AI transformation. End-to-end ownership across the ML lifecycle—data strategy, model architecture, feature engineering, training, ML system design, A/B experimentation, deployment, and monitoring. Currently building production agentic AI platforms for media and advertising. Deep expertise in large-scale ML enforcement systems, LLM-powered applications, neural machine translation, and responsible AI.",
     contact: {
       phone: "+44-7767978269",
       email: "champ.srijeet@gmail.com",
@@ -17,64 +17,76 @@
     { name: "GitHub", url: "https://github.com/chatterjeesrijeet", icon: "github" },
     { name: "Medium", url: "https://medium.com/@srijeetchatterjee", icon: "book" },
     { name: "LeetCode", url: "https://leetcode.com/u/srijeet_chatterjee/", icon: "code" },
-    { name: "Resume", url: "context_docs/chatterjeeSrijeet.pdf", icon: "file" }
+    { name: "Resume", url: "assets/docs/SrijeetChatterjee_Resume_v1.pdf", icon: "file" }
   ];
 
   const experience = [
     {
+      company: "Publicis Media",
+      role: "AI Engineering Lead",
+      location: "London, UK",
+      period: "January 2026 - Present",
+      highlights: [
+        "Leading a team of 6 AI engineers to architect and deliver an enterprise-scale Agentic AI platform for programmatic media planning and optimisation.",
+        "Designed and deployed 5 specialised AI agents across 5 media channels, with 3 enterprise clients onboarded in the first 6 weeks.",
+        "Engineered the complete agentic pipeline using AWS Strands framework (Bedrock) with AWS AgentCore as the managed runtime.",
+        "Built the full AI Evaluation & Observability stack using Langfuse, AWS CloudWatch, and Lambda-based event hooks.",
+        "Established evaluation benchmarks, guardrails, and responsible AI protocols for agentic behaviour."
+      ]
+    },
+    {
       company: "Meta (WhatsApp Integrity)",
       role: "Senior Software Engineer, Machine Learning",
       location: "London, UK",
-      period: "April 2025 - Present",
+      period: "April 2025 - December 2025",
       highlights: [
-        "Designing and implementing the first Neural Network based classifier to enforce on bad actors (SCAM) on the platform.",
-        "Achieved an 18% reduction in scammer engaged conversations through strategic model deployment.",
-        "Supervised Finetuning of Llama 7B vs 70B models using Low-Rank Adaptation (LoRA) to optimize appeal process evaluations."
+        "Designed and launched the first neural-network-based enforcement classifier on WhatsApp (2.5B+ MAU), reducing scammer-engaged conversations by 18%.",
+        "Identified and pursued the initiative to curb Victim-Initiated Scams—contributing to >50% of all scams on the platform.",
+        "Owned full initiative lifecycle: trained classifiers on 300M+ disconnect events and 40M+ wa.me events daily, delivering 11% reduction in SEC topline metric.",
+        "Collaborated with SMB team to extend enforcement models to business accounts, broadening integrity coverage."
       ]
     },
     {
       company: "UBS Investment Bank",
       role: "Generative AI Engineer, Director",
       location: "London, UK",
-      period: "Dec 2022 - Mar 2025",
+      period: "December 2022 - March 2025",
       highlights: [
-        "Led the design and implementation of the FIRST Generative AI use-case approved for production within Investment Banking.",
-        "Developed a real-time 'Hook Generation' solution for equity research reports, processing 55k reports annually.",
-        "Drove business value with A/B tests showing 60% increase in client readership.",
-        "Saved 500 Man-Hours (avg) annually while accelerating GenAI adoption across the firm.",
-        "Led Japanese-English Neural Machine Translation (NMT) initiatives, achieving a BLEU score of 0.54 (46% improvement over 3rd party vendors)."
+        "Architected and delivered UBS's first generative AI solution in production—a real-time hook generation engine for ~55,000 equity research reports annually.",
+        "Designed end-to-end ML system with A/B experimentation framework demonstrating 60% higher client readership.",
+        "Accelerated enterprise-wide GenAI adoption while saving 500+ man-hours per year in analyst workflow efficiency.",
+        "Led Japanese-English Neural Machine Translation, achieving BLEU score of 0.54 (46% improvement over third-party vendors)."
       ]
     },
     {
       company: "Deloitte",
       role: "Senior Machine Learning Engineer",
       location: "London, UK",
-      period: "June 2022 - Dec 2022",
+      period: "June 2022 - December 2022",
       highlights: [
-        "Developed 'Talk-2-Tables' & 'Talk-2-Docs' solutions using RAG (Retrieval Augmented Generation) with Chroma vector DB.",
-        "Established comprehensive evaluation criteria for LLM solutions focusing on security and explainability."
+        "Developed Talk-2-Tables and Talk-2-Docs: LLM-powered solutions using RAG with Chroma vector store.",
+        "Designed evaluation criteria, security protocols, and explainability frameworks for enterprise LLM deployments."
       ]
     },
     {
       company: "IBM India Pvt Limited",
-      role: "Data Scientist III (Band 7A)",
+      role: "Data Scientist III, Band 7A",
       location: "Bangalore, India",
       period: "July 2019 - March 2022",
       highlights: [
-        "Developed automated problem-solution extractor and ranking algorithms for AT&T using NLP (POS tagging, SVD).",
-        "Designed deep learning encoder-decoder architectures (ReLU boosted LSTM) for solution generation.",
-        "Created multi-document text analyzers for Wells Fargo using Watson Knowledge Services.",
-        "Published patent on Business Language Processing using Latent Space oriented Quality of Solution (LoQoS)."
+        "Developed production web APIs for Defect Removal Efficiency metric within CI/CD DevOps pipeline.",
+        "Engineered automated problem-solution extractor using POS tagging, SVD-based Quality of Solution scoring.",
+        "Designed encoder-decoder architecture for automated solution generation using ReLU-boosted LSTM."
       ]
     },
     {
-      company: "Tata Consultancy Services Ltd",
+      company: "Tata Consultancy Services",
       role: "Data Scientist, Advanced Analytics",
       location: "Kolkata, India",
       period: "March 2013 - July 2017",
       highlights: [
-        "Developed 'offer conversion' prediction models achieving 74.68% accuracy.",
-        "Served as SME for eCRM and COPs (Centralized Offer Palette System) modules."
+        "Served as SME for eCRM and COPs modules.",
+        "Developed offer conversion prediction model achieving 74.68% accuracy for Cognitive Metrics initiative."
       ]
     }
   ];
@@ -85,17 +97,23 @@
   ];
 
   const achievements = [
-    "First Patent File Reward (Dec 2021)",
-    "AIR 344 in GATE CSE (Top 0.2%)",
-    "IBM Extra Mile Award (Deep Learning Training)"
+    "First Patent File Reward, IBM (December 2021)",
+    "AIR 344 in GATE CSE among ~130,000 candidates (2017)",
+    "IBM Extra Mile Award (Deep Learning Instructor, 200+ participants)",
+    "Best Team Award, TCS (2016)",
+    "U.S. Patent Filed - Business Language Processing using LoQoS Score & ReLU-boosted LSTM"
   ];
 
   const skills = [
-    { category: "Generative AI & LLMs", skills: ["LangChain", "LangGraph", "CrewAI", "Agentic AI", "OpenAI API", "RAG", "Llama", "LoRA"] },
-    { category: "Languages & Core", skills: ["Python", "C++", "Java", "SQL", "MATLAB", "Data Structures", "Algorithms"] },
-    { category: "ML Frameworks", skills: ["PyTorch", "TensorFlow/Keras", "Scikit-learn", "Pandas", "NumPy", "OpenCV", "NLTK"] },
-    { category: "MLOps & Cloud", skills: ["Docker", "Kubernetes", "Azure Cognitive Services", "MLFlow", "Databricks", "Jenkins", "Git", "DVC"] },
-    { category: "Vector DBs", skills: ["Qdrant", "Chroma", "FAISS", "Oracle"] }
+    { category: "ML & Deep Learning", skills: ["Transformers", "Attention Mechanisms", "CNNs", "LSTMs", "Encoder-Decoder", "SVD", "Classical ML", "Reinforcement Learning"] },
+    { category: "NLP & Language", skills: ["Seq-to-Seq", "POS Tagging", "Text Mining", "NER", "Neural Machine Translation", "RAG", "Information Retrieval"] },
+    { category: "Agentic & Generative AI", skills: ["LangChain", "LangGraph", "CrewAI", "AWS Strands", "AWS Bedrock Agent", "AWS AgentCore", "MCP", "OpenAI API", "LoRA/QLoRA"] },
+    { category: "AI & ML Frameworks", skills: ["PyTorch", "Keras", "Scikit-learn", "OpenCV", "Hugging Face Transformers"] },
+    { category: "Evaluation & Observability", skills: ["Langfuse", "MLFlow", "DVC", "AWS CloudWatch", "AWS Lambda", "Custom Evaluation Pipelines"] },
+    { category: "ML System Design & MLOps", skills: ["End-to-end ML Pipelines", "Feature Engineering", "Model Serving", "A/B Experimentation", "Docker", "Kubernetes", "Jenkins", "Databricks", "CI/CD"] },
+    { category: "Cloud & Infrastructure", skills: ["AWS Bedrock", "AWS Lambda", "AWS AgentCore", "Azure Cognitive Services", "Git"] },
+    { category: "Languages & Data", skills: ["Python", "C++", "Java", "SQL", "FastAPI", "Flask", "Streamlit", "NumPy", "Pandas"] },
+    { category: "Vector & Data Stores", skills: ["Qdrant", "Chroma", "FAISS", "Oracle", "Cloudant"] }
   ];
 
   const mentorship = [
