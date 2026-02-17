@@ -26,6 +26,7 @@
       role: "AI Engineering Lead",
       location: "London, UK",
       period: "January 2026 - Present",
+      logo: "assets/images/logo/publicis_200.png",
       highlights: [
         "Leading a team of 6 AI engineers to architect and deliver an enterprise-scale Agentic AI platform for programmatic media planning and optimisation.",
         "Designed and deployed 5 specialised AI agents across 5 media channels, with 3 enterprise clients onboarded in the first 6 weeks.",
@@ -39,6 +40,7 @@
       role: "Senior Software Engineer, Machine Learning",
       location: "London, UK",
       period: "April 2025 - December 2025",
+      logo: "assets/images/logo/meta_200.png",
       highlights: [
         "Designed and launched the first neural-network-based enforcement classifier on WhatsApp (2.5B+ MAU), reducing scammer-engaged conversations by 18%.",
         "Identified and pursued the initiative to curb Victim-Initiated Scams—contributing to >50% of all scams on the platform.",
@@ -51,6 +53,7 @@
       role: "Generative AI Engineer, Director",
       location: "London, UK",
       period: "December 2022 - March 2025",
+      logo: "assets/images/logo/ubs_200.png",
       highlights: [
         "Architected and delivered UBS's first generative AI solution in production—a real-time hook generation engine for ~55,000 equity research reports annually.",
         "Designed end-to-end ML system with A/B experimentation framework demonstrating 60% higher client readership.",
@@ -63,6 +66,7 @@
       role: "Senior Machine Learning Engineer",
       location: "London, UK",
       period: "June 2022 - December 2022",
+      logo: "assets/images/logo/deloitte_200.png",
       highlights: [
         "Developed Talk-2-Tables and Talk-2-Docs: LLM-powered solutions using RAG with Chroma vector store.",
         "Designed evaluation criteria, security protocols, and explainability frameworks for enterprise LLM deployments."
@@ -73,6 +77,7 @@
       role: "Data Scientist III, Band 7A",
       location: "Bangalore, India",
       period: "July 2019 - March 2022",
+      logo: "assets/images/logo/ibm_200.png",
       highlights: [
         "Developed production web APIs for Defect Removal Efficiency metric within CI/CD DevOps pipeline.",
         "Engineered automated problem-solution extractor using POS tagging, SVD-based Quality of Solution scoring.",
@@ -84,6 +89,7 @@
       role: "Data Scientist, Advanced Analytics",
       location: "Kolkata, India",
       period: "March 2013 - July 2017",
+      logo: "assets/images/logo/tcs_200.png",
       highlights: [
         "Served as SME for eCRM and COPs modules.",
         "Developed offer conversion prediction model achieving 74.68% accuracy for Cognitive Metrics initiative."
@@ -92,8 +98,8 @@
   ];
 
   const education = [
-    { institution: "Indian Institute of Technology (IIT-D)", degree: "Master of Technology in Computer Science Technology", location: "Delhi, India", period: "Aug 2017 - June 2019" },
-    { institution: "Techno India College of Technology (TICT)", degree: "Bachelor of Technology in Electronics & Communications", location: "Kolkata, India", period: "Aug 2008 - July 2012" }
+    { institution: "Indian Institute of Technology (IIT-D)", degree: "Master of Technology in Computer Science Technology", location: "Delhi, India", period: "Aug 2017 - June 2019", logo: "assets/images/logo/iitd_200.png" },
+    { institution: "Techno India College of Technology (TICT)", degree: "Bachelor of Technology in Electronics & Communications", location: "Kolkata, India", period: "Aug 2008 - July 2012", logo: "assets/images/logo/techno_200.png" }
   ];
 
   const achievements = [
@@ -240,6 +246,25 @@
         svg.append(path("M16 18l6-6-6-6"));
         svg.append(path("M8 6l-6 6 6 6"));
         break;
+      case "trophy":
+        svg.append(path("M6 9H4.5a2.5 2.5 0 0 1 0-5H6"));
+        svg.append(path("M18 9h1.5a2.5 2.5 0 0 0 0-5H18"));
+        svg.append(path("M4 22h16"));
+        svg.append(path("M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"));
+        svg.append(path("M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"));
+        svg.append(path("M18 2H6v7a6 6 0 0 0 12 0V2Z"));
+        break;
+      case "award":
+        svg.append(circle(12, 8, 6));
+        svg.append(path("M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"));
+        break;
+      case "star":
+        svg.append(path("M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"));
+        break;
+      case "graduation":
+        svg.append(path("M22 10v6M2 10l10-5 10 5-10 5z"));
+        svg.append(path("M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"));
+        break;
       default:
         svg.append(path("M12 5v14"));
         svg.append(path("M5 12h14"));
@@ -289,7 +314,19 @@
     wrap.innerHTML = "";
     experience.forEach(item => {
       const card = el("div", "timeline-card");
-      const title = el("h4", "", item.company);
+
+      // Company name with inline logo
+      const title = el("h4", "company-title");
+      if(item.logo) {
+        const logoImg = document.createElement("img");
+        logoImg.src = item.logo;
+        logoImg.alt = "";
+        logoImg.className = "company-logo-inline";
+        logoImg.onerror = function() { this.style.display = 'none'; };
+        title.appendChild(logoImg);
+      }
+      title.appendChild(document.createTextNode(item.company));
+
       const role = el("h5", "", item.role);
 
       const meta = el("div", "timeline-meta");
@@ -317,12 +354,24 @@
     wrap.innerHTML = "";
     education.forEach(item => {
       const card = el("div", "card");
-      const title = el("div", "edu-card-title", item.institution);
+
+      // Institution name with inline logo
+      const title = el("div", "edu-card-title");
+      if(item.logo) {
+        const logoImg = document.createElement("img");
+        logoImg.src = item.logo;
+        logoImg.alt = "";
+        logoImg.className = "edu-logo-inline";
+        title.appendChild(logoImg);
+      }
+      title.appendChild(document.createTextNode(item.institution));
+
       const degree = el("div", "muted", item.degree);
       const meta = el("div", "edu-card-meta");
       const left = el("span", "", item.period);
       const right = el("span", "", item.location);
       meta.append(left, right);
+
       card.append(title, degree, meta);
       wrap.appendChild(card);
     });
