@@ -173,7 +173,8 @@
     }))
   );
 
-  const FALLBACK_PHOTO = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=80";
+  // SVG placeholder with initials while loading
+  const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%230f192c' width='200' height='200'/%3E%3Ctext x='100' y='115' font-family='Inter,system-ui,sans-serif' font-size='72' font-weight='700' fill='%2310b981' text-anchor='middle'%3ESC%3C/text%3E%3C/svg%3E";
 
   const el = (tag, className, text) => {
     const n = document.createElement(tag);
@@ -502,16 +503,18 @@
   async function loadProfileImage(){
     const imgEl = document.getElementById("profilePhoto");
     if(!imgEl) return;
-    imgEl.src = FALLBACK_PHOTO;
+    imgEl.src = PLACEHOLDER_SVG;
     const fav = document.querySelector("link[rel='icon']");
     const jpgUrl = "assets/images/profile/sri_profile_image.jpg";
     const heicUrl = "assets/images/profile/sri_profile_image.HEIC";
-    const tryHead = async (url) => { try { const r = await fetch(url, {method:"HEAD"}); return r.ok; } catch { return false; } };
     const setImg = (url) => { imgEl.src = url; if(fav) fav.href = url; };
 
-    if(await tryHead(jpgUrl)) { setImg(jpgUrl); return; }
-    if(await tryHead(heicUrl)){
-      try{
+    // Try loading the JPG directly
+    const img = new Image();
+    img.onload = () => setImg(jpgUrl);
+    img.onerror = async () => {
+      // Try HEIC conversion as fallback
+      try {
         const resp = await fetch(heicUrl);
         if(resp.ok && window.heic2any){
           const blob = await resp.blob();
@@ -519,13 +522,13 @@
           const finalBlob = Array.isArray(converted) ? converted[0] : converted;
           const url = URL.createObjectURL(finalBlob);
           setImg(url);
-          return;
         }
-      }catch(err){
+      } catch(err) {
         console.warn("HEIC convert failed", err);
+        // Keep placeholder if all fails
       }
-    }
-    setImg(FALLBACK_PHOTO);
+    };
+    img.src = jpgUrl;
   }
 
   function initCounters(){
