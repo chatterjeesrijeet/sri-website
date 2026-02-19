@@ -456,6 +456,51 @@ The booking system is documented separately in `booking-system-architecture.md`.
 
 ---
 
+## Repository Strategy: Why Separate Repos?
+
+### Current Setup
+
+| Repository | Hosting | Purpose |
+|------------|---------|---------|
+| `sri-website` | GitHub Pages | Static frontend (HTML/CSS/JS) |
+| `booking-api` | Vercel Serverless | OTP API endpoints |
+
+### Why This Design Makes Sense
+
+| Benefit | Explanation |
+|---------|-------------|
+| **Different Hosting** | GitHub Pages (free static hosting) + Vercel (free serverless) |
+| **Independent Deployments** | Update API without touching frontend, and vice versa |
+| **Security Isolation** | API secrets never touch the frontend repo |
+| **Different Tech Stacks** | Frontend: HTML/CSS/JS, Backend: Node.js |
+| **Cost** | $0 total - both services have generous free tiers |
+
+### Alternative: Monorepo Approach
+
+You *could* combine them into a single repo:
+
+```
+sri-website/
+├── index.html
+├── assets/
+├── api/           ← Vercel auto-detects this folder
+│   ├── send-otp.js
+│   └── verify-otp.js
+└── docs/
+```
+
+**Trade-offs:**
+- ✅ Single repo to manage
+- ❌ Must host entire site on Vercel (lose GitHub Pages)
+- ❌ Mixed concerns in one repo
+- ❌ API changes trigger full site redeploy
+
+### Decision
+
+**Separate repos is the right design** for this free-tier architecture. It follows the principle of separation of concerns and maximizes the benefits of both GitHub Pages and Vercel free tiers.
+
+---
+
 ## Version History
 
 | Version | Date | Changes |
