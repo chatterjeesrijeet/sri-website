@@ -95,16 +95,17 @@ A secure booking system with email OTP verification using a **Vercel serverless 
 ## System Components
 
 ### 1. Frontend (GitHub Pages)
-**Repository:** `project_3`
+**Repository:** `sri-website`
 **URL:** `https://srijeetchatterjee.com`
 
 ```
-project_3/
+sri-website/
 ├── index.html          # Booking modal UI
 ├── assets/
 │   ├── css/style.css   # Modal styling
 │   └── js/app.js       # API calls (NO credentials)
 └── docs/
+    ├── website-architecture.md
     └── booking-system-architecture.md
 ```
 
@@ -125,7 +126,8 @@ booking-api/
 
 | Variable | Purpose |
 |----------|---------|
-| `EMAILJS_PUBLIC_KEY` | EmailJS authentication |
+| `EMAILJS_PUBLIC_KEY` | EmailJS public key |
+| `EMAILJS_PRIVATE_KEY` | EmailJS private key (for server-side calls) |
 | `EMAILJS_SERVICE_ID` | Gmail service identifier |
 | `EMAILJS_TEMPLATE_ID` | OTP email template |
 | `OTP_SALT` | Secret salt for hashing |
@@ -300,7 +302,7 @@ const ALLOWED_ORIGINS = [
 
 ### Frontend Updates
 ```bash
-# In project_3 folder
+# In sri-website folder
 git add .
 git commit -m "Update message"
 git push
@@ -335,8 +337,9 @@ git push
 |---------|------|---------|
 | v1 | Feb 2025 | Frontend-only with client-side EmailJS |
 | v2 | Feb 2025 | Vercel backend, credentials secured |
+| v2.1 | Feb 2025 | Added private key (accessToken) for server-side EmailJS calls |
 
 ---
 
-*Document created: February 2025*
+*Document updated: February 2025*
 *Architecture: Secure Serverless with Vercel*
